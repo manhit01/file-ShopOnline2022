@@ -1,0 +1,38 @@
+﻿@model List<ProductMainCategory>
+
+<div class="bg-header-nav hidden-xs hidden-sm">
+    <div>
+        <div class="row row-noGutter-2">
+            <nav class="header-nav">
+                <ul class="item_big">
+                    @foreach (var item in Model)
+                    {
+                        <li class="nav-item nav-item-2 ">
+                            <a class="a-img"
+                               asp-route="ProductListByMainCat"
+                               asp-route-mid="@item.ProductMainCategoryID"
+                               asp-route-title="@item.Title.ToUrlFormat()"
+                               asp-route-page="@null">
+                                <span>@item.Title</span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="item_small hidden-sm hidden-xs">
+                                @foreach (var subItem in item.ProductCategories)
+                                {
+                                    <li>
+                                        <a asp-route="ProductListBySubCat"
+                                           asp-route-mid="@subItem.ProductMainCategoryID"
+                                           asp-route-cid="@subItem.ProductCategoryID"
+                                           asp-route-title="@subItem.Title.ToUrlFormat()">
+                                            @subItem.Title
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1397 @@
+﻿@model Product
+
+<div class="breadcrumb_background">
+    <div class="title_full">
+        <div class="container a-center">
+            <h1 class="title_page">@Model.Title</h1>
+        </div>
+    </div>
+</div>
+
+<section class="bread-crumb">
+    <span class="crumb-border"></span>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 a-left">
+                <ul class="breadcrumb">
+                    <li class="home">
+                        <a asp-route="Home"><span>Trang chủ</span></a>
+                        <span class="mr_lr">&nbsp;/&nbsp;</span>
+                    </li>
+
+                    <li>
+                        <a asp-route="ProductList"><span>Sản phẩm</span></a>
+                        <span class="mr_lr">&nbsp;/&nbsp;</span>
+                    </li>
+
+                    <li>
+                        <strong><span>@Model.Title</span></strong>
+                    <li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="product margin-top-10 f-left w_100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 padding-col-left-0">
+                <div class="row details-product">
+                    <div class="product-detail-left product-images col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col_large_default large-image">
+                            <a href="@Model.Avatar" data-rel="prettyPhoto[product-gallery]">
+                                <img class="checkurl img-responsive" id="img_01" src="@Model.Avatar">
+                            </a>
+                        </div>
+
+                        <div id="gallery_02" class="owl-carousel owl-theme thumbnail-product thumb_product_details not-dqowl"
+                             data-loop="false" data-lg-items="4" data-md-items="3" data-sm-items="3" data-xs-items="3" data-xxs-items="3">
+                            @foreach (var item in Model.ImageList.GetListImage())
+                            {
+                                <div class="item">
+                                    <a href="javascript:void(0)" data-image="@item" data-zoom-image="@item">
+                                        <img data-img="@item" 
+                                             src="/contents/images-icons/rolling.svg" 
+                                             data-lazyload="@item">
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 details-pro">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="fw w_100 section" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                                    <div class="price-box">
+                                        <span class="special-price">
+                                            <span class="price product-price">@Model.Price.GetCurrencyFormat()</span>
+                                        </span>
+                                        <!-- Giá Khuyến mại -->
+                                        <span class="old-price" itemprop="priceSpecification" itemscope itemtype="https://schema.org/priceSpecification">
+                                            <del class="price product-price-old">
+                                                @Model.OldPrice.GetCurrencyFormat()
+                                            </del>
+                                        </span>
+                                        <!-- Giá gốc -->
+                                    </div>
+                                    <div class="group-status">
+                                        <span class="first_status section status margin-bottom-10">
+                                            Tình trạng:
+                                            <span class="status_name availabel hasvariant">
+                                                <span class="status_name availabel">
+                                                    @(Model.Status == true ? "Còn hàng" : "Hết hàng")
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="section product-summary">
+                                        <div class="rte">
+                                            @Html.Raw(Model.Specification)
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*Xử lý giỏ hàng*@
+                                <div class="form-product">
+                                    <div enctype="multipart/form-data" id="add-to-cart-form" action="https://computing.edu.vn/cart/add" method="post" class="form-inline margin-bottom-0">
+                                        <div class="form-group form_button_details">
+                                            <div class="form_product_content">
+                                                <div class="soluong show">
+                                                    <div class="label_sl margin-bottom-5">Số lượng:</div>
+                                                    <div class="custom input_number_product custom-btn-number form-control">
+                                                        <button class="btn_num num_1 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro ) &amp;&amp; qtypro &gt; 1 ) result.value--;return false;" type="button">-</button>
+                                                        <input type="text" id="qtym" name="quantity" value="1" class="form-control prd_quantity" onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" onchange="if(this.value == 0)this.value=1;">
+                                                        <button class="btn_num num_2 button button_qty" onclick="var result = document.getElementById('qtym'); var qtypro = result.value; if( !isNaN( qtypro )) result.value++;return false;" type="button">+</button>
+                                                    </div>
+                                                </div>
+                                                <div class="button_actions clearfix">
+                                                    <button type="submit" class="btn btn_base btn_add_cart btn-cart add_to_cart">
+                                                        <span class="text_1">Cho vào giỏ hàng</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab_h">
+                    <!-- Nav tabs -->
+                    <div class="product-tab e-tabs not-dqtab">
+                        <ul class="tabs tabs-title clearfix">
+                            <li class="tab-link" data-tab="tab-1">
+                                <h3><span>Mô tả sản phẩm</span></h3>
+                            </li>
+                            <li class="tab-link" data-tab="tab-2">
+                                <h3><span>Tab tùy chỉnh</span></h3>
+                            </li>
+                            <li class="tab-link" data-tab="tab-3">
+                                <h3><span>Đánh giá</span></h3>
+                            </li>
+                        </ul>
+                        <div class="tab-float">
+                            <div id="tab-1" class="tab-content content_extab">
+                                <div class="rte">
+                                    @Html.Raw(Model.Content)
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tab-content content_extab">
+                            <div class="rte">
+                                Nội dung tùy chỉnh viết ở đây
+
+                            </div>
+                        </div>
+                        <div id="tab-3" class="tab-content content_extab tab-review-c">
+                            <div class="rte">
+                                <div id="bizweb-product-reviews" class="bizweb-product-reviews" data-id="13342777">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Cột bên phải*@
+            <aside class="sidebar left-content col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+
+                <div class="hed-service section_service hidden-sm hidden-xs">
+
+
+
+
+                    <div class="service-item">
+                        <a class="icon-service">
+                            <img src="contents/images-icons/loading-icon0446.png?1594811922421" data-lazyload="//bizweb.dktcdn.net/100/341/423/themes/777143/assets/icon1.png?1594811922421" alt="Giao hàng miễn phí">
+                        </a>
+                        <div class="service">
+                            <span class="service-title">Giao hàng miễn phí</span>
+                            <span class="service-subtitle">Áp dụng cho đơn hàng trên 500.000đ tại Hà Nội và TP. HCM</span>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="service-item">
+                        <a class="icon-service">
+                            <img src="contents/images-icons/loading-icon0446.png?1594811922421" data-lazyload="//bizweb.dktcdn.net/100/341/423/themes/777143/assets/icon2.png?1594811922421" alt="Tri ân khách hàng ">
+                        </a>
+                        <div class="service">
+                            <span class="service-title">Tri ân khách hàng </span>
+                            <span class="service-subtitle">Ưu đãi cực lớn, giảm thêm 10% cho khách hàng thân thiết</span>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="service-item">
+                        <a class="icon-service">
+                            <img src="contents/images-icons/loading-icon0446.png?1594811922421" data-lazyload="//bizweb.dktcdn.net/100/341/423/themes/777143/assets/icon3.png?1594811922421" alt="Đổi trả trong 30 ngày">
+                        </a>
+                        <div class="service">
+                            <span class="service-title">Đổi trả trong 30 ngày</span>
+                            <span class="service-subtitle">Dịch vụ đổi trả, hoàn tiền nhanh chóng với tất cả sản phẩm</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="wrap_background_aside asidecollection">
+                    <aside class="aside-item sidebar-category collection-category">
+                        <div class="aside-title">
+                            <h2 class="title-head margin-top-0 margin-bottom-10"><span class="category-select">Danh mục sản phẩm</span></h2>
+                        </div>
+                        <div class="aside-content">
+                            <nav class="nav-category navbar-toggleable-md">
+                                <ul class="nav navbar-pills">
+
+
+                                    <li class="nav-item lv1">
+                                        <a class="nav-link" href="index.html">Trang chủ</a>
+
+
+
+                                    <li class="nav-item lv1">
+                                        <a class="nav-link" href="gioi-thieu.html">Giới thiệu</a>
+
+
+
+                                    <li class="nav-item lv1">
+                                        <a class="nav-link" href="collections/collections-all.html">Sản phẩm</a>
+
+
+
+                                    <li class="nav-item lv1">
+                                        <a href="tin-tuc.html" class="nav-link">Tin tức</a>
+                                        <i class="fa fa-angle-right"></i>
+                                        <ul class="dropdown-menu">
+
+
+                                            <li class="nav-item lv2">
+                                                <a class="nav-link" href="tin-moi.html">Tin mới</a>
+                                            </li>
+
+
+
+                                            <li class="nav-item lv2">
+                                                <a class="nav-link" href="thu-thuat.html">Thủ thuật</a>
+                                            </li>
+
+
+
+                                            <li class="nav-item lv2">
+                                                <a class="nav-link" href="xu-huong.html">Xu hướng</a>
+                                            </li>
+
+
+
+                                        </ul>
+                                    </li>
+
+
+
+                                    <li class="nav-item lv1">
+                                        <a class="nav-link" href="lien-he.html">Liên hệ</a>
+                                </ul>
+                            </nav>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="aside_banner">
+                    <div class="banner-left">
+                        <a href="#" title="Alt">
+                            <img src="contents/images-icons/loading-icon0446.png?1594811922421" data-lazyload="//bizweb.dktcdn.net/100/341/423/themes/777143/assets/banner_as.jpg?1594811922421" alt="Alt">
+                        </a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<div class="relate-section section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 owl_nav_custome1 related-product xs-margin-top-15">
+                <div class="section_prd_feature">
+                    <div class="heading title-head">
+                        <h2>
+                            <a href="san-pham-khuyen-mai.html" title="Sản phẩm cùng loại">Sản phẩm cùng loại</a>
+                        </h2>
+                    </div>
+                    <div class="products product_related products-view-grid-bb owl-carousel owl-theme products-view-grid not-dot2" data-dot="false"
+                         data-nav="false" data-lg-items="4" data-md-items="4" data-sm-items="3" data-xs-items="2" data-margin="30">
+
+
+                        <div class="item_product_main related-item">
+                            <div class="item">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div class="product-item grid product-box product-item-main clearfix">
+                                    <div class="product-thumbnail">
+
+                                        <a title="Xem nhanh" href="vivo-v11i.html" data-handle="vivo-v11i" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                        </a>
+
+
+                                        <div class="saleright">
+                                            <span>
+                                                -
+                                                7%
+                                            </span>
+                                        </div>
+
+                                        <a class="image_thumb" href="vivo-v11i.html" title="Vivo V11i">
+                                            <img src="contents/images-icons/loading0446.gif?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/large/100/341/423/products/17-1.jpg?v=1544705671083" alt="Vivo V11i">
+                                        </a>
+
+                                    </div>
+                                    <div class="product-detail product-info">
+
+                                        <div class="reviews_details_product">
+                                            <div class="bizweb-product-reviews-badge" data-id="13363430"></div>
+                                        </div>
+
+                                        <h3 class="product-title">
+                                            <a href="vivo-v11i.html" title="Vivo V11i">Vivo V11i</a>
+                                        </h3>
+
+                                        <div class="blockprice ">
+                                            <div class="hidden percent tag-style">
+                                                <a>
+                                                    7%
+                                                </a>
+                                            </div>
+                                            <div class="product-item-price price-box">
+
+
+
+                                                <span class="price-style">
+                                                    <span class="old-price">7.000.000₫</span>
+                                                </span>
+
+                                                <span class="price-style">
+                                                    <span class="special-price">6.490.000₫</span>
+                                                </span>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="button-view product-action clearfix">
+                                        <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13363430" enctype="multipart/form-data">
+                                            <div class="add-cart btn-buy button">
+
+                                                <input type="hidden" name="variantId" value="22187482" />
+                                                <a class="btn-buy btn-cart button_35 left-to add_to_cart" title="Cho vào giỏ hàng">
+                                                    <span>Mua ngay</span>
+                                                </a>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="hidden product-box product-item-main product-item-compare">
+
+                                    <div class="product-thumbnail">
+
+                                        <a class="image_thumb p_img" href="vivo-v11i.html" title="Vivo V11i">
+                                            <img src="http://bizweb.dktcdn.net/100/341/423/themes/777143/assets/rolling.svg?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/medium/100/341/423/products/17-1.jpg?v=1544705671083" alt="Vivo V11i">
+                                        </a>
+
+                                        <div class="saleright">
+                                            <span>
+                                                -
+                                                7%
+                                            </span>
+                                        </div>
+
+
+                                        <a data-toggle="tooltip" title="Xem nhanh" href="vivo-v11i.html" data-handle="vivo-v11i" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                        <div class="product-action clearfix">
+                                            <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13363430" enctype="multipart/form-data">
+                                                <div class="group_action">
+
+                                                    <input type="hidden" name="variantId" value="22187482" />
+                                                    <a data-toggle="tooltip" class="btn-buy firstb btn-cart button_35 left-to muangay add_to_cart" title="Mua ngay">
+                                                        <i class="fa fa-shopping-basket"></i>Thêm vào giỏ
+                                                    </a>
+
+
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                    <div class="product-info product-bottom mh">
+
+                                        <h3 class="product-name">
+                                            <a href="vivo-v11i.html" title="Vivo V11i">Vivo V11i</a>
+                                        </h3>
+
+                                        <div class="section">
+                                            <div class="blockprice">
+                                                <div class="product-item-price price-box">
+
+
+                                                    <span class="special-price">
+                                                        <span class="price product-price">6.490.000₫</span>
+                                                    </span>
+
+                                                    <span class="product-item-price-sale old-price">
+                                                        <span class="compare-price price product-price-old">7.000.000₫</span>
+                                                    </span>
+
+
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="item_product_main related-item">
+                            <div class="item">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div class="product-item grid product-box product-item-main clearfix">
+                                    <div class="product-thumbnail">
+
+                                        <a title="Xem nhanh" href="de-sac-khong-day-belkin-cho-samsung.html" data-handle="de-sac-khong-day-belkin-cho-samsung" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                        </a>
+
+
+                                        <div class="saleright">
+                                            <span>
+                                                -
+                                                40%
+                                            </span>
+                                        </div>
+
+                                        <a class="image_thumb" href="de-sac-khong-day-belkin-cho-samsung.html" title="Đế sạc không dây Belkin cho Samsung">
+                                            <img src="contents/images-icons/loading0446.gif?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/large/100/341/423/products/16.jpg?v=1544705372127" alt="Đế sạc không dây Belkin cho Samsung">
+                                        </a>
+
+                                    </div>
+                                    <div class="product-detail product-info">
+
+                                        <div class="reviews_details_product">
+                                            <div class="bizweb-product-reviews-badge" data-id="13363425"></div>
+                                        </div>
+
+                                        <h3 class="product-title">
+                                            <a href="de-sac-khong-day-belkin-cho-samsung.html" title="Đế sạc không dây Belkin cho Samsung">Đế sạc không dây Belkin cho Samsung</a>
+                                        </h3>
+
+                                        <div class="blockprice ">
+                                            <div class="hidden percent tag-style">
+                                                <a>
+                                                    40%
+                                                </a>
+                                            </div>
+                                            <div class="product-item-price price-box">
+
+
+
+                                                <span class="price-style">
+                                                    <span class="old-price">1.000.000₫</span>
+                                                </span>
+
+                                                <span class="price-style">
+                                                    <span class="special-price">599.000₫</span>
+                                                </span>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="button-view product-action clearfix">
+                                        <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13363425" enctype="multipart/form-data">
+                                            <div class="add-cart btn-buy button">
+
+                                                <input class="hidden" type="hidden" name="variantId" value="22187476" />
+                                                <a class="btn-cart button_35 left-to" title="Chọn sản phẩm" href="de-sac-khong-day-belkin-cho-samsung.html">
+                                                    <span>Tùy chọn</span>
+                                                </a>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="hidden product-box product-item-main product-item-compare">
+
+                                    <div class="product-thumbnail">
+
+                                        <a class="image_thumb p_img" href="de-sac-khong-day-belkin-cho-samsung.html" title="Đế sạc không dây Belkin cho Samsung">
+                                            <img src="http://bizweb.dktcdn.net/100/341/423/themes/777143/assets/rolling.svg?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/medium/100/341/423/products/16.jpg?v=1544705372127" alt="Đế sạc không dây Belkin cho Samsung">
+                                        </a>
+
+                                        <div class="saleright">
+                                            <span>
+                                                -
+                                                40%
+                                            </span>
+                                        </div>
+
+
+                                        <a data-toggle="tooltip" title="Xem nhanh" href="de-sac-khong-day-belkin-cho-samsung.html" data-handle="de-sac-khong-day-belkin-cho-samsung" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                        <div class="product-action clearfix">
+                                            <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13363425" enctype="multipart/form-data">
+                                                <div class="group_action">
+
+                                                    <input class="hidden" type="hidden" name="variantId" value="22187476" />
+                                                    <a data-toggle="tooltip" class="btn-cart firstb button_35 left-to bold-text" title="Tùy chọn" href="de-sac-khong-day-belkin-cho-samsung.html">
+                                                        <i class="fa fa-cogs"></i>Tùy chọn
+                                                    </a>
+
+
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                    <div class="product-info product-bottom mh">
+
+                                        <h3 class="product-name">
+                                            <a href="de-sac-khong-day-belkin-cho-samsung.html" title="Đế sạc không dây Belkin cho Samsung">Đế sạc không dây Belkin cho Samsung</a>
+                                        </h3>
+
+                                        <div class="section">
+                                            <div class="blockprice">
+                                                <div class="product-item-price price-box">
+
+
+                                                    <span class="special-price">
+                                                        <span class="price product-price">599.000₫</span>
+                                                    </span>
+
+                                                    <span class="product-item-price-sale old-price">
+                                                        <span class="compare-price price product-price-old">1.000.000₫</span>
+                                                    </span>
+
+
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="item_product_main related-item">
+                            <div class="item">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div class="product-item grid product-box product-item-main clearfix">
+                                    <div class="product-thumbnail">
+
+                                        <a title="Xem nhanh" href="iphone-xr-128gb.html" data-handle="iphone-xr-128gb" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                        </a>
+
+
+                                        <div class="saleright">
+                                            <span>
+                                                -
+                                                8%
+                                            </span>
+                                        </div>
+
+                                        <a class="image_thumb" href="iphone-xr-128gb.html" title="iPhone XR 128GB">
+                                            <img src="contents/images-icons/loading0446.gif?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/large/100/341/423/products/10-1.png?v=1544578028000" alt="iPhone XR 128GB">
+                                        </a>
+
+                                    </div>
+                                    <div class="product-detail product-info">
+
+                                        <div class="reviews_details_product">
+                                            <div class="bizweb-product-reviews-badge" data-id="13351058"></div>
+                                        </div>
+
+                                        <h3 class="product-title">
+                                            <a href="iphone-xr-128gb.html" title="iPhone XR 128GB">iPhone XR 128GB</a>
+                                        </h3>
+
+                                        <div class="blockprice ">
+                                            <div class="hidden percent tag-style">
+                                                <a>
+                                                    8%
+                                                </a>
+                                            </div>
+                                            <div class="product-item-price price-box">
+
+
+
+                                                <span class="price-style">
+                                                    <span class="old-price">27.000.000₫</span>
+                                                </span>
+
+                                                <span class="price-style">
+                                                    <span class="special-price">24.900.000₫</span>
+                                                </span>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="button-view product-action clearfix">
+                                        <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13351058" enctype="multipart/form-data">
+                                            <div class="add-cart btn-buy button">
+
+                                                <input class="hidden" type="hidden" name="variantId" value="22157484" />
+                                                <a class="btn-cart button_35 left-to" title="Chọn sản phẩm" href="iphone-xr-128gb.html">
+                                                    <span>Tùy chọn</span>
+                                                </a>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="hidden product-box product-item-main product-item-compare">
+
+                                    <div class="product-thumbnail">
+
+                                        <a class="image_thumb p_img" href="iphone-xr-128gb.html" title="iPhone XR 128GB">
+                                            <img src="http://bizweb.dktcdn.net/100/341/423/themes/777143/assets/rolling.svg?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/medium/100/341/423/products/10-1.png?v=1544578028000" alt="iPhone XR 128GB">
+                                        </a>
+
+                                        <div class="saleright">
+                                            <span>
+                                                -
+                                                8%
+                                            </span>
+                                        </div>
+
+
+                                        <a data-toggle="tooltip" title="Xem nhanh" href="iphone-xr-128gb.html" data-handle="iphone-xr-128gb" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                        <div class="product-action clearfix">
+                                            <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13351058" enctype="multipart/form-data">
+                                                <div class="group_action">
+
+                                                    <input class="hidden" type="hidden" name="variantId" value="22157484" />
+                                                    <a data-toggle="tooltip" class="btn-cart firstb button_35 left-to bold-text" title="Tùy chọn" href="iphone-xr-128gb.html">
+                                                        <i class="fa fa-cogs"></i>Tùy chọn
+                                                    </a>
+
+
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                    <div class="product-info product-bottom mh">
+
+                                        <h3 class="product-name">
+                                            <a href="iphone-xr-128gb.html" title="iPhone XR 128GB">iPhone XR 128GB</a>
+                                        </h3>
+
+                                        <div class="section">
+                                            <div class="blockprice">
+                                                <div class="product-item-price price-box">
+
+
+                                                    <span class="special-price">
+                                                        <span class="price product-price">24.900.000₫</span>
+                                                    </span>
+
+                                                    <span class="product-item-price-sale old-price">
+                                                        <span class="compare-price price product-price-old">27.000.000₫</span>
+                                                    </span>
+
+
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="item_product_main related-item">
+                            <div class="item">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div class="product-item grid product-box product-item-main clearfix">
+                                    <div class="product-thumbnail">
+
+                                        <a title="Xem nhanh" href="xiaomi-pocophone-f1.html" data-handle="xiaomi-pocophone-f1" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                        </a>
+
+
+                                        <div class="saleright">
+                                            <span>
+                                                -
+                                                5%
+                                            </span>
+                                        </div>
+
+                                        <a class="image_thumb" href="xiaomi-pocophone-f1.html" title="Xiaomi Pocophone F1">
+                                            <img src="contents/images-icons/loading0446.gif?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/large/100/341/423/products/3-jpeg.jpg" alt="Xiaomi Pocophone F1">
+                                        </a>
+
+                                    </div>
+                                    <div class="product-detail product-info">
+
+                                        <div class="reviews_details_product">
+                                            <div class="bizweb-product-reviews-badge" data-id="13342920"></div>
+                                        </div>
+
+                                        <h3 class="product-title">
+                                            <a href="xiaomi-pocophone-f1.html" title="Xiaomi Pocophone F1">Xiaomi Pocophone F1</a>
+                                        </h3>
+
+                                        <div class="blockprice ">
+                                            <div class="hidden percent tag-style">
+                                                <a>
+                                                    5%
+                                                </a>
+                                            </div>
+                                            <div class="product-item-price price-box">
+
+
+
+                                                <span class="price-style">
+                                                    <span class="old-price">8.500.000₫</span>
+                                                </span>
+
+                                                <span class="price-style">
+                                                    <span class="special-price">8.100.000₫</span>
+                                                </span>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="button-view product-action clearfix">
+                                        <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13342920" enctype="multipart/form-data">
+                                            <div class="add-cart btn-buy button">
+
+                                                <input type="hidden" name="variantId" value="22128880" />
+                                                <a class="btn-buy btn-cart button_35 left-to add_to_cart" title="Cho vào giỏ hàng">
+                                                    <span>Mua ngay</span>
+                                                </a>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="hidden product-box product-item-main product-item-compare">
+
+                                    <div class="product-thumbnail">
+
+                                        <a class="image_thumb p_img" href="xiaomi-pocophone-f1.html" title="Xiaomi Pocophone F1">
+                                            <img src="http://bizweb.dktcdn.net/100/341/423/themes/777143/assets/rolling.svg?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/medium/100/341/423/products/3-jpeg.jpg" alt="Xiaomi Pocophone F1">
+                                        </a>
+
+                                        <div class="saleright">
+                                            <span>
+                                                -
+                                                5%
+                                            </span>
+                                        </div>
+
+
+                                        <a data-toggle="tooltip" title="Xem nhanh" href="xiaomi-pocophone-f1.html" data-handle="xiaomi-pocophone-f1" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                        <div class="product-action clearfix">
+                                            <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13342920" enctype="multipart/form-data">
+                                                <div class="group_action">
+
+                                                    <input type="hidden" name="variantId" value="22128880" />
+                                                    <a data-toggle="tooltip" class="btn-buy firstb btn-cart button_35 left-to muangay add_to_cart" title="Mua ngay">
+                                                        <i class="fa fa-shopping-basket"></i>Thêm vào giỏ
+                                                    </a>
+
+
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                    <div class="product-info product-bottom mh">
+
+                                        <h3 class="product-name">
+                                            <a href="xiaomi-pocophone-f1.html" title="Xiaomi Pocophone F1">Xiaomi Pocophone F1</a>
+                                        </h3>
+
+                                        <div class="section">
+                                            <div class="blockprice">
+                                                <div class="product-item-price price-box">
+
+
+                                                    <span class="special-price">
+                                                        <span class="price product-price">8.100.000₫</span>
+                                                    </span>
+
+                                                    <span class="product-item-price-sale old-price">
+                                                        <span class="compare-price price product-price-old">8.500.000₫</span>
+                                                    </span>
+
+
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="item_product_main related-item">
+                            <div class="item">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div class="product-item grid product-box product-item-main clearfix">
+                                    <div class="product-thumbnail">
+
+                                        <a title="Xem nhanh" href="asus-zenfone-5-ze620kl.html" data-handle="asus-zenfone-5-ze620kl" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                        </a>
+
+
+                                        <div class="saleright">
+                                            <span>
+                                                -
+                                                20%
+                                            </span>
+                                        </div>
+
+                                        <a class="image_thumb" href="asus-zenfone-5-ze620kl.html" title="Asus Zenfone 5 (ZE620KL)">
+                                            <img src="contents/images-icons/loading0446.gif?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/large/100/341/423/products/8-3.jpg?v=1544436321587" alt="Asus Zenfone 5 (ZE620KL)">
+                                        </a>
+
+                                    </div>
+                                    <div class="product-detail product-info">
+
+                                        <div class="reviews_details_product">
+                                            <div class="bizweb-product-reviews-badge" data-id="13342907"></div>
+                                        </div>
+
+                                        <h3 class="product-title">
+                                            <a href="asus-zenfone-5-ze620kl.html" title="Asus Zenfone 5 (ZE620KL)">Asus Zenfone 5 (ZE620KL)</a>
+                                        </h3>
+
+                                        <div class="blockprice ">
+                                            <div class="hidden percent tag-style">
+                                                <a>
+                                                    20%
+                                                </a>
+                                            </div>
+                                            <div class="product-item-price price-box">
+
+
+
+                                                <span class="price-style">
+                                                    <span class="old-price">10.000.000₫</span>
+                                                </span>
+
+                                                <span class="price-style">
+                                                    <span class="special-price">7.990.000₫</span>
+                                                </span>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="button-view product-action clearfix">
+                                        <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13342907" enctype="multipart/form-data">
+                                            <div class="add-cart btn-buy button">
+
+                                                <input type="hidden" name="variantId" value="22128810" />
+                                                <a class="btn-buy btn-cart button_35 left-to add_to_cart" title="Cho vào giỏ hàng">
+                                                    <span>Mua ngay</span>
+                                                </a>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="hidden product-box product-item-main product-item-compare">
+
+                                    <div class="product-thumbnail">
+
+                                        <a class="image_thumb p_img" href="asus-zenfone-5-ze620kl.html" title="Asus Zenfone 5 (ZE620KL)">
+                                            <img src="http://bizweb.dktcdn.net/100/341/423/themes/777143/assets/rolling.svg?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/medium/100/341/423/products/8-3.jpg?v=1544436321587" alt="Asus Zenfone 5 (ZE620KL)">
+                                        </a>
+
+                                        <div class="saleright">
+                                            <span>
+                                                -
+                                                20%
+                                            </span>
+                                        </div>
+
+
+                                        <a data-toggle="tooltip" title="Xem nhanh" href="asus-zenfone-5-ze620kl.html" data-handle="asus-zenfone-5-ze620kl" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                        <div class="product-action clearfix">
+                                            <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13342907" enctype="multipart/form-data">
+                                                <div class="group_action">
+
+                                                    <input type="hidden" name="variantId" value="22128810" />
+                                                    <a data-toggle="tooltip" class="btn-buy firstb btn-cart button_35 left-to muangay add_to_cart" title="Mua ngay">
+                                                        <i class="fa fa-shopping-basket"></i>Thêm vào giỏ
+                                                    </a>
+
+
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                    <div class="product-info product-bottom mh">
+
+                                        <h3 class="product-name">
+                                            <a href="asus-zenfone-5-ze620kl.html" title="Asus Zenfone 5 (ZE620KL)">Asus Zenfone 5 (ZE620KL)</a>
+                                        </h3>
+
+                                        <div class="section">
+                                            <div class="blockprice">
+                                                <div class="product-item-price price-box">
+
+
+                                                    <span class="special-price">
+                                                        <span class="price product-price">7.990.000₫</span>
+                                                    </span>
+
+                                                    <span class="product-item-price-sale old-price">
+                                                        <span class="compare-price price product-price-old">10.000.000₫</span>
+                                                    </span>
+
+
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="item_product_main related-item">
+                            <div class="item">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div class="product-item grid product-box product-item-main clearfix">
+                                    <div class="product-thumbnail">
+
+                                        <a title="Xem nhanh" href="sony-xperia-xa1-plus.html" data-handle="sony-xperia-xa1-plus" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                        </a>
+
+
+                                        <a class="image_thumb" href="sony-xperia-xa1-plus.html" title="Sony Xperia XA1 Plus">
+                                            <img src="contents/images-icons/loading0446.gif?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/large/100/341/423/products/7-1.jpg?v=1544436130857" alt="Sony Xperia XA1 Plus">
+                                        </a>
+
+                                    </div>
+                                    <div class="product-detail product-info">
+
+                                        <div class="reviews_details_product">
+                                            <div class="bizweb-product-reviews-badge" data-id="13342892"></div>
+                                        </div>
+
+                                        <h3 class="product-title">
+                                            <a href="sony-xperia-xa1-plus.html" title="Sony Xperia XA1 Plus">Sony Xperia XA1 Plus</a>
+                                        </h3>
+
+                                        <div class="blockprice ">
+                                            <div class="hidden percent tag-style">
+                                                <a>
+                                                    20%
+                                                </a>
+                                            </div>
+                                            <div class="product-item-price price-box">
+
+
+                                                <span class="price-style">
+                                                    <span class="special-price">1.000.000₫</span>
+                                                </span>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="button-view product-action clearfix">
+                                        <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13342892" enctype="multipart/form-data">
+                                            <div class="add-cart btn-buy button">
+
+                                                <input type="hidden" name="variantId" value="22128511" />
+                                                <a class="btn-buy btn-cart button_35 left-to disabled" title="Hết hàng">
+                                                    <span>Hết hàng</span>
+                                                </a>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="hidden product-box product-item-main product-item-compare">
+
+                                    <div class="product-thumbnail">
+
+                                        <a class="image_thumb p_img" href="sony-xperia-xa1-plus.html" title="Sony Xperia XA1 Plus">
+                                            <img src="http://bizweb.dktcdn.net/100/341/423/themes/777143/assets/rolling.svg?1594811922421" data-lazyload="//bizweb.dktcdn.net/thumb/medium/100/341/423/products/7-1.jpg?v=1544436130857" alt="Sony Xperia XA1 Plus">
+                                        </a>
+
+
+                                        <a data-toggle="tooltip" title="Xem nhanh" href="sony-xperia-xa1-plus.html" data-handle="sony-xperia-xa1-plus" class="xem_nhanh btn-circle btn_view btn right-to quick-view hidden-xs hidden-sm">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                        <div class="product-action clearfix">
+                                            <form action="https://computing.edu.vn/cart/add" method="post" class="variants form-nut-grid" data-id="product-actions-13342892" enctype="multipart/form-data">
+                                                <div class="group_action">
+
+                                                    <a data-toggle="tooltip" href="sony-xperia-xa1-plus.html" class="btn-buy firstc btn-cart button_35 left-to bold-text" title="Chi tiết">
+                                                        <i class="fa fa-eye"></i>Hết hàng
+                                                    </a>
+
+
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                    <div class="product-info product-bottom mh">
+
+                                        <h3 class="product-name">
+                                            <a href="sony-xperia-xa1-plus.html" title="Sony Xperia XA1 Plus">Sony Xperia XA1 Plus</a>
+                                        </h3>
+
+                                        <div class="section">
+                                            <div class="blockprice">
+                                                <div class="product-item-price price-box">
+
+
+                                                    <span class="special-price">
+                                                        <span class="price product-price">1.000.000₫</span>
+                                                    </span>
+
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

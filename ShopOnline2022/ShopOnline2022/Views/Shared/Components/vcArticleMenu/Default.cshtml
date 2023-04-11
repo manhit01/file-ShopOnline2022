@@ -1,0 +1,12 @@
+﻿@model List<ArticleCategory>
+
+<ul class="item_small hidden-sm hidden-xs">
+    @foreach (var item in Model)
+    {
+        <li>
+            <a asp-route="ArticleListByCat" 
+               asp-route-id="@item.ArticleCategoryID"
+               asp-route-title="@item.Title.ToUrlFormat()">@item.Title</a>
+        </li>
+    }
+</ul>

@@ -1,0 +1,103 @@
+﻿@model List<ProductMainCategory>
+
+@foreach (var item in Model)
+{
+    <section class="awe-section-3">
+        <section class="section section_product section_product_rows">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 not-tab">
+                        <div class="section title_module_main wrap_tab">
+                            <h2 class="h2">
+                                <a asp-route="ProductListByMainCat"
+                               asp-route-mid="@item.ProductMainCategoryID"
+                               asp-route-title="@item.Title.ToUrlFormat()">
+                                    @item.Title
+                                </a>
+                            </h2>
+                            <span class="hidden-md hidden-lg button_show_tab">
+                                <a class="">Xem danh mục</a>
+                            </span>
+                            <ul class="tabs tabs_1 link_tab_check_click closeit">
+                                @foreach (var subItem in item.ProductCategories)
+                                {
+                                    <li class="tab-title tab-link link_eff">
+                                        <a asp-route="ProductListBySubCat"
+                                   asp-route-mid="@subItem.ProductMainCategoryID"
+                                   asp-route-cid="@subItem.ProductCategoryID"
+                                   asp-route-title="@subItem.Title.ToUrlFormat()">
+                                            @subItem.Title
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="content_module">
+                                    <div class="wrap_content">
+                                        <div class="owl_col_section owlproductrows owl-carousel" data-dot="false" data-nav="true"
+                                         data-lg-items="4" data-md-items="4" data-xs-items="2" data-sm-items="3" data-margin="30">
+                                            @foreach (var subItem in item.ProductCategories)
+                                            {
+                                                @foreach (var subSubItem in subItem.Products)
+                                                {
+                                                    <div class="item_product_main itemcustome">
+                                                        <div class="product-item grid product-box product-item-main clearfix">
+                                                            <div class="product-thumbnail">
+                                                                <div class='saleright @(subSubItem.Price.GetBonusPecent(subSubItem.OldPrice)=="0%"?"hidden":"")'>
+                                                                    <span>
+                                                                        - @subSubItem.Price.GetBonusPecent(subSubItem.OldPrice)
+                                                                    </span>
+                                                                </div>
+                                                                <a class="image_thumb"
+                                                                   asp-route="ProductDetail"
+                                                                   asp-route-id="@subSubItem.ProductID"
+                                                                   asp-route-title="@subSubItem.Title.ToUrlFormat()">
+                                                                    <img src="contents/images-icons/loading0446.gif"
+                                                             data-lazyload="@subSubItem.Avatar">
+                                                                </a>
+                                                            </div>
+                                                            <div class="product-detail product-info">
+                                                                <h3 class="product-title">
+                                                                    <a asp-route="ProductDetail"
+                                                                       asp-route-id="@subSubItem.ProductID"
+                                                                       asp-route-title="@subSubItem.Title.ToUrlFormat()">
+                                                                        @subSubItem.Title
+                                                                    </a>
+                                                                </h3>
+                                                                <div class="blockprice ">
+                                                                    <div class="product-item-price price-box">
+                                                                        <span class="price-style @(subSubItem.OldPrice == null ? "hidden" : "")">
+                                                                            <span class="old-price">@subSubItem.OldPrice.GetCurrencyFormat()</span>
+                                                                        </span>
+                                                                        <span class="price-style">
+                                                                            <span class="special-price">@subSubItem.Price.GetCurrencyFormat()</span>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="button-view product-action clearfix">
+                                                                <div class="add-cart btn-buy button">
+                                                                    <a class="btn-cart button_35 left-to" 
+                                                                       asp-route="ProductDetail"
+                                                                       asp-route-id="@subSubItem.ProductID"
+                                                                       asp-route-title="@subSubItem.Title.ToUrlFormat()">
+                                                                        <span>Xem thêm</span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </section>
+}
